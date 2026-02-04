@@ -1,210 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Be My Valentine 💖</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For You</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: radial-gradient(circle at top, #ffd1dc, #ff5f8f);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      overflow: hidden;
-    }
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    font-family: system-ui, sans-serif;
+    overflow: hidden;
+    color: white;
+  }
 
-    .card {
-      width: 90%;
-      max-width: 380px;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(6px);
-      border-radius: 24px;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-      padding: 26px;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-    }
+  .star {
+    position: fixed;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 3s infinite alternate;
+  }
 
-    h1 {
-      margin: 0 0 10px 0;
-      font-size: 1.7rem;
-    }
+  @keyframes twinkle {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+  }
 
-    p {
-      margin: 0 0 18px 0;
-      font-size: 1.1rem;
-      line-height: 1.45;
-    }
+  .card {
+    position: relative;
+    z-index: 2;
+    max-width: 360px;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    padding: 28px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(8px);
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  }
 
-    .buttons {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      align-items: center;
-      margin-top: 18px;
-      flex-wrap: wrap;
-    }
+  h1 {
+    margin-top: 0;
+    font-size: 1.6rem;
+  }
 
-    button {
-      border: none;
-      border-radius: 999px;
-      padding: 12px 22px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
+  p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
 
-    #yes {
-      background: #ec4899;
-      color: white;
-      box-shadow: 0 14px 30px rgba(236,72,153,0.45);
-      transform: scale(1);
-    }
+  .choices {
+    margin-top: 26px;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    align-items: center;
+  }
 
-    #no {
-      background: #e5e7eb;
-      color: #111827;
-    }
+  button {
+    border: none;
+    border-radius: 999px;
+    padding: 12px 26px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+  }
 
-    /* Romantic visual state */
-    .romance {
-      animation: glow 1.8s ease-in-out infinite alternate;
-    }
+  #yes {
+    background: #ec4899;
+    color: white;
+    box-shadow: 0 12px 30px rgba(236,72,153,0.5);
+  }
 
-    @keyframes glow {
-      from { box-shadow: 0 0 18px rgba(255,105,180,0.35); }
-      to   { box-shadow: 0 0 40px rgba(255,105,180,0.85); }
-    }
+  #no {
+    background: rgba(255,255,255,0.7);
+    color: #020617;
+  }
 
-    .final {
-      font-size: 1.15rem;
-    }
+  .fade {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
 
-    .heart {
-      position: fixed;
-      bottom: -30px;
-      left: 0;
-      font-size: 22px;
-      opacity: 0.9;
-      pointer-events: none;
-      animation: floatUp 4.2s linear forwards;
-    }
+  .glow {
+    box-shadow: 0 0 50px rgba(236,72,153,0.9);
+    transform: scale(1.25);
+  }
 
-    @keyframes floatUp {
-      from { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
-      to   { transform: translateY(-120vh) translateX(var(--drift)) scale(1.8); opacity: 0; }
-    }
+  .heart {
+    position: fixed;
+    font-size: 22px;
+    animation: float 4s linear forwards;
+    pointer-events: none;
+  }
 
-    .sparkle {
-      font-size: 2rem;
-      margin-top: 10px;
-    }
-  </style>
+  @keyframes float {
+    from { transform: translateY(0) scale(1); opacity: 1; }
+    to { transform: translateY(-120vh) scale(2); opacity: 0; }
+  }
+</style>
 </head>
 
 <body>
-  <div class="card" id="card">
-    <h1>Hey ❤️</h1>
-    <p>Will you be my Valentine?</p>
 
-    <div class="buttons">
-      <button id="yes" onclick="yesClicked()">Yes 💕</button>
-      <button id="no" onclick="noAttempt()" ontouchstart="noAttempt()">No 🙈</button>
-    </div>
+<div class="card" id="card">
+  <h1>Hey ❤️</h1>
+  <p id="text">I’ve been meaning to ask you something.</p>
 
-    <p id="hint" style="margin-top:14px; color:#6b7280; font-size:0.95rem;">
-      (Tip: you can try “No”… but it might have consequences 😄)
-    </p>
+  <div class="choices">
+    <button id="yes" onclick="yes()">Yes</button>
+    <button id="no" onclick="no()">No</button>
   </div>
+</div>
 
-  <script>
-    let yesScale = 1;
-    let noCount = 0;
-    let heartsStarted = false;
-    let heartTimer = null;
+<script>
+  // stars
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement("div");
+    s.className = "star";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.top = Math.random() * 100 + "vh";
+    s.style.animationDelay = Math.random() * 3 + "s";
+    document.body.appendChild(s);
+  }
 
-    function yesClicked() {
-      const card = document.getElementById("card");
-      card.classList.add("romance");
+  let noCount = 0;
 
-      card.innerHTML = `
-        <h1>YAY! 💖</h1>
-        <p class="final">
-          You just made my whole day.<br/>
-          Happy Valentine’s Day 💘
-        </p>
-        <div class="sparkle">💞 ✨ 💞</div>
-      `;
+  function no() {
+    noCount++;
+    document.getElementById("text").innerText =
+      noCount < 3
+        ? "Sometimes the universe likes to nudge us gently…"
+        : "Some things just feel right.";
 
-      startHearts();
-    }
+    document.getElementById("no").classList.add("fade");
+    document.getElementById("yes").classList.add("glow");
 
-    function noAttempt() {
-      // Prevent "double firing" on some mobiles (touchstart + click)
-      const now = Date.now();
-      if (noAttempt.last && now - noAttempt.last < 250) return;
-      noAttempt.last = now;
+    // subtle star drift
+    document.querySelectorAll(".star").forEach(star => {
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.top = Math.random() * 100 + "vh";
+    });
+  }
 
-      noCount++;
+  function yes() {
+    const card = document.getElementById("card");
+    card.innerHTML = `
+      <h1>It was always you 💖</h1>
+      <p>
+        Will you be my Valentine?
+      </p>
+    `;
+    startHearts();
+  }
 
-      // Grow YES button
-      const yesBtn = document.getElementById("yes");
-      if (!yesBtn) return;
+  function startHearts() {
+    setInterval(() => {
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.innerText = "💖";
+      h.style.left = Math.random() * 100 + "vw";
+      h.style.bottom = "-20px";
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 4000);
+    }, 260);
+  }
+</script>
 
-      // Each "No" increases scale
-      yesScale = Math.min(yesScale + 0.22, 2.6); // cap so it doesn't become absurd
-      yesBtn.style.transform = `scale(${yesScale})`;
-
-      // Make it more "tempting"
-      yesBtn.style.boxShadow = `0 ${14 + noCount * 3}px ${30 + noCount * 6}px rgba(236,72,153,0.55)`;
-
-      // Change the No button text progressively
-      const noBtn = document.getElementById("no");
-      if (noBtn) {
-        const texts = [
-          "No 🙈",
-          "Wait… 😅",
-          "You sure? 🥺",
-          "Really sure? 😳",
-          "Ok but… 😬",
-          "I’m getting nervous 😵‍💫"
-        ];
-        noBtn.innerText = texts[Math.min(noCount, texts.length - 1)];
-      }
-
-      // Optional: tiny bounce to draw attention
-      yesBtn.animate(
-        [{ transform: `scale(${yesScale})` }, { transform: `scale(${yesScale + 0.06})` }, { transform: `scale(${yesScale})` }],
-        { duration: 180, easing: "ease-out" }
-      );
-    }
-
-    function startHearts() {
-      if (heartsStarted) return;
-      heartsStarted = true;
-
-      heartTimer = setInterval(() => {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerText = pick(["💖","💗","💘","💞","💕"]);
-        heart.style.left = (Math.random() * 100) + "vw";
-        heart.style.fontSize = (16 + Math.random() * 20) + "px";
-        heart.style.setProperty("--drift", (Math.random() * 120 - 60) + "px");
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 4300);
-      }, 220);
-    }
-
-    function pick(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-  </script>
 </body>
 </html>
