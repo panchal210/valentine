@@ -22,21 +22,29 @@
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(255, 75, 110, 0.2);
             text-align: center;
-            max-width: 400px;
-            width: 90%;
+            width: 350px;
             z-index: 10;
         }
 
-        .gif-container img {
+        /* Fixed size for the gif area to prevent layout shifts */
+        .gif-wrapper {
             width: 100%;
-            max-width: 250px;
-            border-radius: 15px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-bottom: 1rem;
+        }
+
+        .gif-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 12px;
         }
 
         h1 {
             color: #ff4b6e;
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin: 10px 0;
         }
 
@@ -44,14 +52,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             margin-top: 20px;
-            min-height: 60px; /* Prevents layout jump */
+            height: 50px;
         }
 
         button {
             padding: 12px 25px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
@@ -62,22 +70,19 @@
         #yesBtn {
             background-color: #ff4b6e;
             color: white;
-            order: 1; /* Keeps Yes on the left/first */
         }
 
         #noBtn {
             background-color: #eee;
             color: #555;
-            order: 2;
-            /* No absolute position initially to keep alignment perfect */
+            z-index: 1000;
         }
 
         .heart {
             position: absolute;
             color: #ff4b6e;
-            user-select: none;
             pointer-events: none;
-            animation: float 4s linear forwards;
+            animation: float 3s linear forwards;
         }
 
         @keyframes float {
@@ -89,12 +94,12 @@
 <body>
 
     <div class="container">
-        <div class="gif-container">
-            <img id="displayGif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYycXN6OHB0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0JmcmVzaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute bear">
+        <div class="gif-wrapper">
+            <img id="displayGif" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZleHdkZ3Jidm96eHk1Mnd4Z3B0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0JmcmVzaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Asking bear">
         </div>
         <h1 id="question">Will you be my Valentine?</h1>
         
-        <div class="buttons" id="buttonGroup">
+        <div class="buttons">
             <button id="yesBtn" onclick="celebrate()">Yes!</button>
             <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
         </div>
@@ -104,31 +109,28 @@
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             
-            // On first hover, switch to fixed positioning so it can escape
+            // Set to fixed on first interaction
             if (noBtn.style.position !== 'fixed') {
                 noBtn.style.position = 'fixed';
             }
 
-            // Calculate random position within the viewport padding
-            const padding = 50;
-            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+            // Move it to a random spot within the window
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             
-            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
-
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
         }
 
         function celebrate() {
             const question = document.getElementById('question');
-            const buttons = document.getElementById('buttonGroup');
+            const buttons = document.querySelector('.buttons');
             const gif = document.getElementById('displayGif');
 
-            question.innerHTML = "I knew you'd say yes! ❤️";
+            question.innerHTML = "Yay! See you soon! ❤️";
             buttons.style.display = 'none';
-            gif.src = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExM201cTZ6YXFidXN0dzZqZzR0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0JmcmVzaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/L4lvBpHFmxc6V0N0wD/giphy.gif";
+            // Change to a happy celebration gif
+            gif.src = "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZleHdkZ3Jidm96eHk1Mnd4Z3B0ZzR0ZzR0ZzR0ZzR0ZzR0ZzR0JmcmVzaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/L4lvBpHFmxc6V0N0wD/giphy.gif";
 
             setInterval(createHeart, 150);
         }
@@ -138,11 +140,9 @@
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
             document.body.appendChild(heart);
-            
-            setTimeout(() => heart.remove(), 4000);
+            setTimeout(() => heart.remove(), 3000);
         }
     </script>
 </body>
